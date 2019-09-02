@@ -77,6 +77,7 @@ class jsonObject {
 			if($v->id == $this->id) {
 				foreach($param as $key => $val) {
 					$data[$i]->$key = $val;
+					$this->$key = $val;
 				}
 				break;
 			}
