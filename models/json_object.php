@@ -1,7 +1,11 @@
 <?php
 
+/**
+ *	The base class of the system, using json files as tables to store the data and handling the crud operations
+ */
 class jsonObject {
 	
+	//fetch all data from the table
 	public static function fetch($table) {
 		try {
 			$dataStr = file_get_contents("data/".$table);
@@ -13,7 +17,8 @@ class jsonObject {
 			return false;
 		}
 	}
-		
+	
+	//write received data into the table
 	public static function commit($table, $data) {
 		try {
 			$dataStr = json_encode($data);
@@ -29,12 +34,19 @@ class jsonObject {
 		}
 	}
 	
-	public static function getTable() {return "";}
+	//the static function for getting the child class table
+	public static function getTable() {
+		$selfClass = get_called_class();
+		$res = new $selfClass();
+		return $res->table;
+	}
 
+	//get all data in the table, make it static so that it can be called without an instance of object
 	public static function all() {
 		return self::fetch(static::getTable());
 	}
 	
+	//get an element by id, make it static so that it can be called without an instance of object
 	public static function getById($id) {
 		$data = self::all();
 		$table = static::getTable();
@@ -48,6 +60,7 @@ class jsonObject {
 		return false;
 	}
 	
+	//create an instance of the class and write it into the table, make it static so that it can be called without an instance of object
 	public static function create($param) {
 		$data = self::all();
 		$table = static::getTable();
@@ -70,6 +83,7 @@ class jsonObject {
 		}
 	}
 	
+	//update the instance of the class and write it into the table
 	public function update($param) {
 		$data = self::all();
 		$table = $this->getTable();
@@ -89,6 +103,7 @@ class jsonObject {
 		}
 	}
 	
+	//delete the instance of the class and write it into the table
 	public function delete() {
 		$data = $this->all();
 		$table = $this->getTable();

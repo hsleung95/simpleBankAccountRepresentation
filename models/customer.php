@@ -1,4 +1,9 @@
 <?php
+
+	/**
+	 *  Customer class which contains the bank attribute
+	 *	Customer belongs to a person so it contains the foreign key person_id
+	 */
 	class Customer extends jsonObject {
 		
 		public $id;
@@ -6,6 +11,7 @@
 		public $person_id;
 		protected $table = "customers.json";
 		
+		//constructor, if argument is passed (fetch from table), create a new instance for it
 		public function __construct($params = []) {
 			if ($params != []) {
 				$this->id = $params->id;
@@ -14,11 +20,10 @@
 			}
 		}
 		
-		public static function getTable() {
-			$res = new self();
-			return $res->table;
-		}
-		
+		/**
+		 *	function for getting related person
+		 *	return the person instance or null if cannot find the related person
+		 */
 		public function person() {
 			if (!$this->person_id) {
 				return null;
